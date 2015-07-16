@@ -1,0 +1,171 @@
+# Dutch translation for a Smart Solution module
+# Copyright (c) 2012-Today Smart Solution
+# FIRST AUTHOR <fabian.semal@smartsolution.be>
+#
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2013-06-07 19:37+0000\n"
+"PO-Revision-Date: 2013-07-13 22:42+0000\n"
+"Last-Translator: Fabian Semal <fabian.semal@smartsolution.be>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+#. module: account_budget_detailline
+#: field:account.budget.post,budget_assign_force:0
+msgid "Show all accounts for assignmen"
+msgstr "Toon alle rekeningen voor toewijzing"
+
+#. module: account_budget_detailline
+#: model:ir.ui.menu,name:account_budget_detailline.menu_budget_detail_lines
+msgid "Budget Detail Lines"
+msgstr "Budget detail-lijnen"
+
+#. module: account_budget_detailline
+#: model:ir.ui.menu,name:account_budget_detailline.menu_all_budget_detail_lines
+msgid "All Budget Detail Lines"
+msgstr "Alle budget detail-lijnen"
+
+#. module: account_budget_detailline
+#: field:account.budget.detailline,analytic_account_id:0
+msgid "Analytic Account"
+msgstr "Analytische rekening"
+
+#. module: account_budget_detailline
+#: field:account.budget.detailline,position_id:0
+msgid "Budgetary Position"
+msgstr "Budgetpost"
+
+#. module: account_budget_detailline
+#: field:account.budget.detailline,name:0
+msgid "Description"
+msgstr "Omschrijving"
+
+#. module: account_budget_detailline
+#: field:account.budget.detailline,planned_amount:0
+msgid "Planned Amount"
+msgstr "Begroot bedrag"
+
+#. module: account_budget_detailline
+#: field:account.budget.detailline,date_from:0
+msgid "Start Date"
+msgstr "Begindatum"
+
+#. module: account_budget_detailline
+#: field:account.budget.detailline,date_to:0
+msgid "End Date"
+msgstr "Einddatum"
+
+#. module: account_budget_detailline
+#: view:account.budget.detailline:0
+#: selection:account.budget.detailline,state:0
+msgid "Draft"
+msgstr "Concept"
+
+#. module: account_budget_detailline
+#: view:account.budget.detailline:0
+#: selection:account.budget.detailline,state:0
+msgid "Confirmed"
+msgstr "Bevestigd"
+
+#. module: account_budget_detailline
+#: view:account.budget.detailline:0
+msgid "Budget Detail Lines"
+msgstr "Budget detail-lijnen"
+
+#. module: account_budget_detailline
+#: view:account.budget.detailline:0
+msgid "All Budget Detail Lines"
+msgstr "Alle budget detail-lijnen"
+
+#. module: account_budget_detailline
+#: view:account.budget.detailline:0
+msgid "Confirm Detail Lines"
+msgstr "Bevestig detail-lijnen"
+
+#. module: account_budget_detailline
+#: view:account.budget.detailline:0
+msgid "Reset to Draft Detail Lines"
+msgstr "Terugzetten naar Concept"
+
+#. module: account_budget_detailline
+#: model:ir.actions.act_window,name:account_budget_detailline.action_all_account_budget_detailline
+msgid "All Budget Detail lines"
+msgstr "Alle budget detail-lijnen"
+
+#. module: account_budget_detailline
+#: model:ir.actions.act_window,name:account_budget_detailline.action_account_budget_detailline
+msgid "Budget Detail lines"
+msgstr "Budget detail-lijnen"
+
+#. module: account
+#: model:ir.actions.act_window,name:account_budget_detailline.action_budget_detail_line_confirm
+msgid "Confirm Detail Lines"
+msgstr "Bevestig detail-lijnen"
+
+#. module: account
+#: model:ir.actions.act_window,name:account_budget_detailline.action_budget_detail_line_draft
+msgid "Reset to Draft Detail Lines"
+msgstr "Terugzetten naar Concept"
+
+#. module: account_budget_detailline
+#: view:account.budget.detailline:0
+#: view:wizard.account.budget.lines.import:0
+msgid "Import Budget Detail Lines"
+msgstr "Importeer detail-lijnen"
+
+#. module: account_budget_detailline
+#: model:ir.actions.act_window,name:account_budget_detailline.action_budget_detail_line_import
+msgid "Import Budget Detail Lines"
+msgstr "Importeer detail-lijnen"
+
+#. module: account_budget_detailline
+#: model:ir.ui.menu,name:account_budget_detailline.menu_act_budget_detailline_import_view
+msgid "Import Budget Detail Lines"
+msgstr "Importeer budget detail-lijnen"
+
+#. module: account_budget_detailline
+#: model:ir.actions.act_window,name:account_budget_detailline.action_budget_lines_update
+#: view:crossovered.budget:0
+msgid "Update Budget Lines"
+msgstr "Update budget-lijnen"
+
+#. module: account_budget_detailline
+#: field:wizard.account.budget.lines.import,lines_file:0
+#: view:wizard.account.budget.lines.import:0
+msgid "Import Budget Detail Lines"
+msgstr "Importeer budget detail-lijnen"
+
+#. module: account_budget_detailline
+#: view:wizard.account.budget.lines.import:0
+msgid "Import Budget Detail Lines"
+msgstr "Importeer budget detail-lijnen"
+
+#. module: account_budget_detailline
+#: field:wizard.account.budget.lines.import,lines_file:0
+#: view:wizard.account.budget.lines.import:0
+msgid "Entry Lines File"
+msgstr "Bestand voor detail-lijnen"
+
+#. module: account_budget_detailline
+#: view:wizard.account.budget.lines.import:0
+msgid "Import File"
+msgstr "Importeer bestand"
+
+#. module: account_budget_detailline
+#: view:wizard.budget.detail.line.confirm:0
+#: code:addons/account_budget_detailline/account_budget_detailline.py:79
+msgid "You cannot confirm a detail line if the related budget is confirmed.\nDetail Line: %s"
+msgstr "U kan een budget detail-lijn niet bevestigen als het gerelateerde budget reeds bevestigd is.\n Detail-lijn: %s"
+
+#. module: account_budget_detailline
+#: view:wizard.budget.detail.line.draft:0
+#: code:addons/account_budget_detailline/account_budget_detailline.py:91
+msgid "You cannot reset to draft a detail line if the related budget is confirmed\nDetail Line: %s"
+msgstr "U kan een budget detail-lijn niet terug naar voorlopid doen als het gerelateerde budget reeds bevestigd is.\n Detail-lijn: %s"
+
+#. module: account_budget_detailline
+#: view:wizard.budget.detail.line.confirm:0
+msgid "Do you want to confirm those budget detail lines ?"
+msgstr "Detail-lijnen bevestigen ?"

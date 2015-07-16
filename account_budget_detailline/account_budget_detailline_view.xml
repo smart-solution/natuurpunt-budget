@@ -1,0 +1,268 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+   <!--
+       account_budget_detailline Views 
+   -->
+
+    <record model="ir.ui.view" id="view_account_budget_detailline_tree">
+        <field name="name">view.account_budget_detailline.tree</field>
+        <field name="model">account.budget.detailline</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Budget Detail lines">
+                <field name="budget_id" attrs="{'readonly': [('state','=','confirm')]}"/>
+                <field name="analytic_account_id"/>
+                <field name="responsible_id" invisible="1"/>
+                <field name="position_id"/>
+                <field name="name"/>
+                <field name="planned_amount"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_account_budget_detailline_form">
+        <field name="name">view.account_budget_detailline.form</field>
+        <field name="model">account.budget.detailline</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Budget Detail line">
+                <field name="budget_id" attrs="{'readonly': [('state','=','confirm')]}"/>
+                <field name="analytic_account_id" attrs="{'readonly': [('state','=','confirm')]}"/>
+                <field name="position_id" attrs="{'readonly': [('state','=','confirm')]}" groups="account.group_account_manager"/>
+                <field name="name" attrs="{'readonly': [('state','=','confirm')]}"/>
+                <field name="planned_amount" attrs="{'readonly': [('state','=','confirm')]}"/>
+                <newline/>
+                <field name="date_from" attrs="{'readonly': [('state','=','confirm')]}"/>
+                <field name="date_to" attrs="{'readonly': [('state','=','confirm')]}"/>
+                <newline/>
+                <field name="state" attrs="{'readonly': [('state','=','confirm')]}"/>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_account_budget_detailline_filter">
+        <field name="name">view.account_budget_detailline.filter</field>
+        <field name="model">account.budget.detailline</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Budget Detail lines">
+                <field name="budget_id"/>
+                <field name="analytic_account_id"/>
+                <field name="position_id"/>
+                <group expand="0" string="Group By...">
+                    <filter context="{'group_by':'budget_id'}" string="Budget"/>
+                    <filter context="{'group_by':'analytic_account_id'}" string="Analytic Account"/>
+                    <filter context="{'group_by':'position_id'}" string="Position"/>
+                    <filter context="{'group_by':'state'}" string="State"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_account_budget_detailline">
+        <field name="name">Budget Detail lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.budget.detailline</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('responsible_id','=',uid)]</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_all_account_budget_detailline">
+        <field name="name">All Budget Detail lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.budget.detailline</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="All Budget Detail Lines" id="menu_all_budget_detail_lines" parent="account_budget.next_id_31" action="action_all_account_budget_detailline" sequence="4" groups="account.group_account_manager"/>
+    <menuitem name="Budget Detail Lines" id="menu_budget_detail_lines" parent="account_budget.next_id_31" action="action_account_budget_detailline" sequence="5" groups="group_budget_owner"/>
+
+    <record id="wizard_budget_detail_line_confirm_form" model="ir.ui.view">
+        <field name="name">wizard.budget.detail.line.confirm.form</field>
+        <field name="model">wizard.budget.detail.line.confirm</field>
+        <field name="arch" type="xml">
+            <form string="Select fiscal year for report" version="7.0">
+                <label colspan="2" string="Do you want to confirm those budget detail lines ?" />
+                <footer>
+                    <button special="cancel" string="Cancel" name="action_cancel" type="object"  class="oe_link" />
+                    or
+                    <button name="lines_confirm" string="Confirm" type="object" class="oe_highlight"/>
+                </footer>
+            </form>
+       </field>
+    </record>
+
+      <act_window id="action_budget_detail_line_confirm"
+            name="Confirm Detail Lines"
+            src_model="account.budget.detailline"
+            res_model="wizard.budget.detail.line.confirm" 
+            key2="client_action_multi"
+            view_mode="form" 
+            view_type="form"
+            view_id="wizard_budget_detail_line_confirm_form"
+            target="new" 
+        />
+
+    <record id="wizard_budget_detail_line_draft_form" model="ir.ui.view">
+        <field name="name">wizard.budget.detail.line.draft.form</field>
+        <field name="model">wizard.budget.detail.line.draft</field>
+        <field name="arch" type="xml">
+            <form string="Select fiscal year for report" version="7.0">
+                <label colspan="2" string="Do you want to reset to draft those budget detail lines ?" />
+                <footer>
+                    <button special="cancel" string="Cancel" name="action_cancel" type="object"  class="oe_link" />
+                    or
+                    <button name="lines_draft" string="draft" type="object" class="oe_highlight"/>
+                </footer>
+            </form>
+       </field>
+    </record>
+
+      <act_window id="action_budget_detail_line_draft"
+            name="Reset to Draft Detail Lines"
+            src_model="account.budget.detailline"
+            res_model="wizard.budget.detail.line.draft" 
+            key2="client_action_multi"
+            view_mode="form" 
+            view_type="form"
+            view_id="wizard_budget_detail_line_draft_form"
+            target="new" 
+        />
+
+        <record id="wizard_budget_detail_line_import_form" model="ir.ui.view">
+            <field name="name">Importeer budget detail-lijnen</field>
+            <field name="model">wizard.account.budget.lines.import</field>
+            <field name="arch" type="xml">
+            <form string="Import Detail Lines" version="7.0">
+                <group colspan="4">
+                    <field name="lines_file"/>
+                </group>
+                <footer>
+                        <button name="detail_lines_import" type="object" string="Import File" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                 </footer>
+            </form>
+            </field>
+        </record>
+
+    <record model="ir.actions.act_window" id="action_budget_detailline_import">
+        <field name="name">Import Budget Detail Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.account.budget.lines.import</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field> 
+    </record>
+
+
+       <menuitem parent="account_budget.next_id_31"
+            id="menu_act_budget_detailline_import_view"
+            action="action_budget_detailline_import" sequence="19" />
+
+        <record id="wizard_budget_lines_update_form" model="ir.ui.view">
+            <field name="name">update Budget Detail Lines</field>
+            <field name="model">wizard.budget.lines.update</field>
+            <field name="arch" type="xml">
+            <form string="Update Budget Lines" version="7.0">
+                <label colspan="2" string="Do you want to update those budget lines ?" />
+                <footer>
+                    <button name="lines_update" type="object" string="Update Lines" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                 </footer>
+            </form>
+            </field>
+        </record>
+
+      <act_window id="action_budget_lines_update"
+            name="Update Budget Lines"
+            src_model="crossovered.budget"
+            res_model="wizard.budget.lines.update" 
+            key2="client_action_multi"
+            view_mode="form" 
+            view_type="form"
+            view_id="wizard_budget_lines_update_form"
+            target="new" 
+        />
+
+       <record id="account_account_budget_post_form_view" model="ir.ui.view">
+            <field name="name">account.account.budget.post.view.form</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+                <label for='note' position='before'>
+                    <label string="Budgetary Positions"/>
+                    <field name="budgetary_position_ids"/>
+                    <field name="budget_assigned"/>
+                </label>
+                <field name="user_type" position="after">
+                    <field name="report_type"/>
+                </field>
+            </field>
+        </record>
+
+       <record id="view_account_budget_post_search" model="ir.ui.view">
+            <field name="name">account.account.budget.post.search</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_search"/>
+            <field name="arch" type="xml">
+                    <field name="user_type" position="after">
+                        <filter name="income" icon="terp-purchase" string="Income Accounts" domain="[('report_type','=','income')]"/>
+                        <filter name="expense" icon="terp-purchase" string="Expense Accounts" domain="[('report_type','=','expense')]"/>
+                    </field>
+            </field>
+        </record>
+
+     <record model="ir.ui.view" id="view_budget_pl_post_form">
+            <field name="name">account.budget.pl.post.form.inherit</field>
+            <field name="model">account.budget.post</field>
+            <field name="inherit_id" ref="account_budget.view_budget_post_form"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="after">
+                    <field name="budget_assign_force"/>
+                </field>
+                <field name="account_ids" position="replace">
+                    <field name="account_ids" context="{'search_default_notbudgetassigned':1, 'search_default_income':1, 'search_default_expense':1, 'from_budget_pos':active_id}"/>
+                </field>
+            </field>
+        </record>
+<!--
+   <record id="wizard_account_budget_detailline_import" model="ir.ui.view">
+        <field name="name">account.budget.detailline.wizard.form</field>
+        <field name="model">wizard.account.budget.lines.import</field>
+        <field name="arch" type="xml">
+            <form string="" version="7.0">
+                <group colspan="4" col="4">
+                    <separator string="Import Budget Detail Lines ?" colspan="2" />
+                </group>
+                <footer>
+                    <button special="cancel" string="Close" name="action_cancel" type="object" icon='gtk-close'/>
+                    <button name="dtail_lines_import" string="Import" type="object"/>
+                </footer>
+            </form>
+       </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_budget_detailline_import">
+        <field name="name">Import Budget Detail Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.account.budget.lines.import</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+    </record>
+-->
+       <menuitem parent="account_budget.next_id_31"
+            id="account_budget.menu_act_crossovered_budget_view" groups="account.group_account_manager"
+            action="account_budget.act_crossovered_budget_view" sequence="1" />
+
+
+    </data>
+</openerp>
