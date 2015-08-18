@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    <record model="ir.ui.view" id="view_account_budget_type_tree">
+        <field name="name">view.account_budget_type_category.tree</field>
+        <field name="model">account.budget.type</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Account Budget Types">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_account_budget_type_form">
+        <field name="name">view.account_budget_type.form</field>
+        <field name="model">account.budget.type</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Account Budget Type">
+				<group colspan="4" col="2">
+		    		<field name="name"/>
+				</group>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_account_budget_type">
+        <field name="name">Account Budget Types</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.budget.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_account_budget_type_tree"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_account_budget_type_tree_view">
+        <field name="sequence">10</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_account_budget_type_tree"/>
+        <field name="act_window_id" ref="action_account_budget_type"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_account_budget_type_form_view">
+        <field name="sequence">20</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_account_budget_type_form"/>
+        <field name="act_window_id" ref="action_account_budget_type_tree_view"/>
+    </record>
+
+    <menuitem action="action_account_budget_type" id="menu_account_budget_type_form" parent = "account_budget.next_id_pos" sequence="30"/>
+
+    <record model="ir.ui.view" id="view_natuurpunt_budget_post_form">
+        <field name="name">view.natuurpunt_budget_post_form</field>
+        <field name="model">account.budget.post</field>
+        <field name="inherit_id" ref="account_budget.view_budget_post_form"/>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <field name="company_id" position="after">
+                <field name="budget_type_id"/>
+            </field>
+        </field>
+    </record>
+
+    </data>
+</openerp>
+
