@@ -33,7 +33,7 @@
             <form string="Budget Detail line">
                 <field name="budget_id" attrs="{'readonly': [('state','=','confirm')]}"/>
                 <field name="analytic_account_id" attrs="{'readonly': [('state','=','confirm')]}"/>
-                <field name="position_id" attrs="{'readonly': [('state','=','confirm')]}" groups="account.group_account_manager"/>
+                <field name="position_id" attrs="{'readonly': [('state','=','confirm')]}" />
                 <field name="name" attrs="{'readonly': [('state','=','confirm')]}"/>
                 <field name="planned_amount" attrs="{'readonly': [('state','=','confirm')]}"/>
                 <newline/>
