@@ -2,3 +2,6 @@ id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
 access_group_budget_owner,"Budget Detailine Budget Owner",model_account_budget_detailline,group_budget_owner,1,1,1,1
 access_group_budget_budget_owner,"Budget Budget Owner",account_budget.model_crossovered_budget,group_budget_owner,1,0,0,0
 access_group_budget_financial_manager,"Budget Financial Manager",account_budget.model_crossovered_budget,account.group_account_manager,1,1,1,1
+access_group_budget_type,"Budget Type",natuurpunt_budget.model_account_budget_type,group_budget_owner,1,0,0,0
+access_group_budget_post,"Budget Post",natuurpunt_budget.model_account_budget_post,group_budget_owner,1,0,0,0
+
