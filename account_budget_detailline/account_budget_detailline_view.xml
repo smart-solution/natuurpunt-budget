@@ -260,7 +260,7 @@
     </record>
 -->
        <menuitem parent="account_budget.next_id_31"
-            id="account_budget.menu_act_crossovered_budget_view" groups="account.group_account_manager"
+            id="account_budget.menu_act_crossovered_budget_view" groups="account.group_account_manager,group_budget_owner"
             action="account_budget.act_crossovered_budget_view" sequence="1" />
 
 
