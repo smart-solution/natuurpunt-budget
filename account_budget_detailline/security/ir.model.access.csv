@@ -4,7 +4,7 @@ access_group_budget_budget_owner,"Budget Budget Owner",account_budget.model_cros
 access_group_budget_financial_manager,"Budget Financial Manager",account_budget.model_crossovered_budget,account.group_account_manager,1,1,1,1
 access_group_budget_type,"Budget Type",natuurpunt_budget.model_account_budget_type,group_budget_owner,1,0,0,0
 access_group_budget_post,"Budget Post",natuurpunt_budget.model_account_budget_post,group_budget_owner,1,0,0,0
-access_group_budget_lines,"Budget lines",model_crossovered_budget_lines,group_budget_owner,1,0,0,0
+access_group_budget_lines,"Budget lines",model_crossovered_budget_lines,group_budget_owner,1,1,1,1
 access_group_budget_fm,"Budget Type FM",natuurpunt_budget.model_account_budget_type,account.group_account_manager,1,1,1,1
 access_group_budget_fm,"Budget Post FM",natuurpunt_budget.model_account_budget_post,account.group_account_manager,1,1,1,1
 access_group_budget_fm,"Budget lines FM",model_crossovered_budget_lines,account.group_account_manager,1,1,1,1
