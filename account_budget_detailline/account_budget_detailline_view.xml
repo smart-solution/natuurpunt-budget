@@ -33,7 +33,7 @@
             <form string="Budget Detail line">
                 <field name="budget_id" attrs="{'readonly': [('state','=','confirm')]}"/>
                 <field name="analytic_account_id" attrs="{'readonly': [('state','=','confirm')]}"/>
-                <field name="position_id" attrs="{'readonly': [('state','=','confirm')]}" groups="account.group_account_manager"/>
+                <field name="position_id" attrs="{'readonly': [('state','=','confirm')]}" />
                 <field name="name" attrs="{'readonly': [('state','=','confirm')]}"/>
                 <field name="planned_amount" attrs="{'readonly': [('state','=','confirm')]}"/>
                 <newline/>
@@ -260,7 +260,7 @@
     </record>
 -->
        <menuitem parent="account_budget.next_id_31"
-            id="account_budget.menu_act_crossovered_budget_view" groups="account.group_account_manager"
+            id="account_budget.menu_act_crossovered_budget_view" groups="account.group_account_manager,group_budget_owner"
             action="account_budget.act_crossovered_budget_view" sequence="1" />
 
 
