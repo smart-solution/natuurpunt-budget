@@ -27,7 +27,7 @@
     "category" : "Generic Modules/Acounting",
     "description": """
 """,
-    "depends" : ["account_budget"],
+    "depends" : ["natuurpunt_budget"],
     "data" : [
         'security/account_budget_detailline_security.xml',
         'account_budget_detailline_data.xml',

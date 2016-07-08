@@ -62,6 +62,22 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="view_natuurpunt_budget_user_ids_form">
+        <field name="name">view.natuurpunt_budget_user_ids_form</field>
+        <field name="model">crossovered.budget</field>
+        <field name="inherit_id" ref="account_budget.crossovered_budget_view_form"/>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <field name="creating_user_id" position="after">
+                <field name="creating_user_ids">
+			<tree string="Responsible users">
+				<field name="name"/>
+			</tree>
+		</field>
+            </field>
+        </field>
+    </record>
+
     </data>
 </openerp>
 

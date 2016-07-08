@@ -45,6 +45,14 @@ class account_budget_post(osv.osv):
     _columns = {
         'budget_type_id': fields.many2one('account.budget.type', 'Type', select=True),
     }
+
+class crossovered_budget(osv.osv):
+
+    _inherit = 'crossovered.budget'
+
+    _columns = {
+	'creating_user_ids': fields.many2many('res.users', 'crossover_budget_user_rel', 'budget_id', 'user_id', 'Responsible Users'),
+    }
     
 account_budget_post()
 

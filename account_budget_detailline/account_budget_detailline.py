@@ -47,7 +47,7 @@ class account_budget_detailline(osv.osv):
         """Cannot delete a line if the line is confirmed"""
         for line in self.browse(cr, uid, ids):
             if line.state != 'draft':
-                raise osv.except_osv(_('Error!'), _('You cannot delete a confirmed budget detail line\nDetail Line: %s'%(line.name)))
+                raise osv.except_osv(_('Error!'), _('Bevestigde budget detaillijn kan niet verwijderd worden.\nDetaillijn: %s'%(line.name)))
         return super(account_budget_detailline, self).unlink(cr, uid, ids, context=context)
 
     def default_get(self, cr, uid, fields, context=None):
@@ -76,7 +76,7 @@ class wizard_budget_detail_line_confirm(osv.TransientModel):
     def lines_confirm(self, cr, uid, ids, context=None):
         for line in self.pool.get('account.budget.detailline').browse(cr, uid, context['active_ids']):
             if line.budget_id.state != 'draft':
-                raise osv.except_osv(_('Error!'), _('You cannot confirm a detail line if the related budget is confirmed.\nDetail Line: %s'%(line.name)))
+                raise osv.except_osv(_('Error!'), _('Detaillijn kan niet bevestigd worden als het gerelateerde budget reeds bevestigd is.\nDetaillijn: %s'%(line.name)))
         return self.pool.get('account.budget.detailline').write(cr, uid, context['active_ids'], {'state':'confirm'})
 
 
@@ -88,7 +88,7 @@ class wizard_budget_detail_line_draft(osv.TransientModel):
         lines = self.pool.get('account.budget.detailline').browse(cr, uid, context['active_ids'])
         for line in lines:
             if line.budget_id.state != 'draft':
-                raise osv.except_osv(_('Error!'), _('You cannot reset to draft a detail line if the related budget is confirmed\nDetail Line: %s'%(line.name)))
+                raise osv.except_osv(_('Error!'), _('Detaillijn kan niet terug naar voorlopig gezet worden omdat het gerelateerde budget reeds bevestigd is.\nDetaillijn: %s'%(line.name)))
         return self.pool.get('account.budget.detailline').write(cr, uid, context['active_ids'], {'state':'draft'})
 
 
@@ -119,6 +119,30 @@ class crossovered_budget(osv.osv):
             ids = self.search(cr, user, args, limit=limit, context=context or {})
         return self.name_get(cr, user, ids, context=context)
 
+    def write(self, cr, uid, ids, vals, context=None):
+	# Check if user is part of the budget owner for that specific budget
+
+	for budget in self.browse(cr, uid, ids):
+		
+		boids = []
+		boids.append(budget.creating_user_id.id)
+		for bo in budget.creating_user_ids:
+			boids.append(bo.id)
+
+		if uid not in boids and uid != 1:
+                        raise osv.except_osv(_('Error'),_("Enkel budget verantwoordelijken kunnen budget wijzigen"))
+
+	return super(crossovered_budget, self).write(cr, uid, ids, vals=vals, context=context)
+
+    def unlink(self, cr, uid, ids, context=None):
+	# Check if user is the budget owner
+
+	for budget in self.browse(cr, uid, ids):
+
+		if uid != budget.creating_user_id.id and uid != 1:
+                        raise osv.except_osv(_('Error'),_("Enkel budget verantwoordelijken kunnen budget verwijderen"))
+
+	return super(crossovered_budget, self).write(cr, uid, ids, vals=vals, context=context)
 
 crossovered_budget()
 
@@ -134,7 +158,7 @@ class wizard_budget_lines_update(osv.TransientModel):
 
         for budget in budget_obj.browse(cr, uid, context['active_ids']):
             if budget.state != 'draft':
-                raise osv.except_osv(_('Error!'), _('You cannot only update the lines of draft budgets (%s)'%(budget.name)))
+                raise osv.except_osv(_('Error!'), _('Lijnen van voorlopige budgetten kunnen niet bijgewerkt worden (%s)'%(budget.name)))
 
             # Delete existing lines
             del_lines = self.pool.get('crossovered.budget.lines').search(cr, uid, [('crossovered_budget_id','=',budget.id)])
@@ -143,9 +167,7 @@ class wizard_budget_lines_update(osv.TransientModel):
             # Group detail lines by Budget / Analytic Account / Budgetary Position
             # 1/ Finds all detail lines for that budget
             budget_lines = dline_obj.search(cr, uid, [('budget_id','=',budget.id),('state','=','confirm')], context=context)
-            print "BLINES:",budget_lines
             blines_info = dline_obj.read(cr, uid, budget_lines, ['analytic_account_id','position_id','date_from','date_to'], context=context)
-            print "BL INFO:",blines_info
 
             # Generate the groupping key
             dlines_grp = {}
@@ -155,7 +177,6 @@ class wizard_budget_lines_update(osv.TransientModel):
                     dlines_grp[grpkey] = [dl['id']]
                 else:
                     dlines_grp[grpkey].append(dl['id'])
-            print "DLINES_GRP:",dlines_grp
 
 #            # 2/ Group by analytic account
 #            dlines_acc = {}
@@ -164,7 +185,6 @@ class wizard_budget_lines_update(osv.TransientModel):
 #                    dlines_acc[dl['analytic_account_id'][0]] = [{'id':dl['id'], 'position_id':dl['position_id'][0]}]
 #                else:
 #                    dlines_acc[dl['analytic_account_id'][0]].append({'id':dl['id'], 'position_id':dl['position_id'][0]})
-#            print "DLINES ACC:",dlines_acc
 #
 #            # 3/ Group by budgeting position
 #            dlines_res = {}
@@ -174,7 +194,6 @@ class wizard_budget_lines_update(osv.TransientModel):
 #                        dlines_res[(k,l['position_id'])] = [l['id']]
 #                    else:
 #                        dlines_res[(k,l['position_id'])].append(l['id'])
-#            print "DLINES RES:",dlines_res    
 
 #            # Create the Budget lines
 #            for blk,blv in dlines_res.iteritems():
@@ -259,13 +278,11 @@ class account_budget_post(osv.osv):
     def create(self, cr, uid, vals, context=None):
         
         if 'account_ids' in vals and vals['account_ids']:
-            print "ACCIDS:",vals['account_ids']
             for acc in self.pool.get('account.account').browse(cr, uid, vals['account_ids'][0][2]):
-                print acc.budgetary_position_ids   
                 if acc.budgetary_position_ids:
                     for budg in acc.budgetary_position_ids:
                         if not 'budget_assign_force' in vals or 'budget_assign_force' in vals and not vals['budget_assign_force']:
-                            raise osv.except_osv(_('Account already assigned !'), _('The account %s is already assigned to another budgetary position, use Force Account Assignation to override'%(acc.code)))
+                            raise osv.except_osv(_('Account already assigned !'), _('De rekening %s is al toegekend aan een andere begroting en kan enkel met "Force Account Assignation" aangepast worden.'%(acc.code)))
 
         return super(account_budget_post, self).create(cr, uid, vals, context=context)
 
@@ -273,13 +290,11 @@ class account_budget_post(osv.osv):
         
         for budget_pos in self.browse(cr, uid, ids):
             if 'account_ids' in vals and vals['account_ids']:
-                print "ACCIDS:",vals['account_ids']
                 for acc in self.pool.get('account.account').browse(cr, uid, vals['account_ids'][0][2]):
-                    print acc.budgetary_position_ids   
                     if acc.budgetary_position_ids:
                         for budg in acc.budgetary_position_ids:
                             if budg.id != budget_pos.id and not budget_pos.budget_assign_force:
-                                raise osv.except_osv(_('Account already assigned !'), _('The account %s is already assigned to another budgetary position, use Force Account Assignation to override'%(acc.code)))
+                                raise osv.except_osv(_('Account already assigned !'), _('De rekening %s is al toegekend aan een andere begroting en kan enkel met "Force Account Assignation" aangepast worden.'%(acc.code)))
         return super(account_budget_post, self).write(cr, uid, ids, vals, context=context)
 
     _columns = {
@@ -300,7 +315,6 @@ class wizard_account_budget_lines_import(osv.TransientModel):
     def detail_lines_import(self, cr, uid, ids, context=None):
         """Import journal items from a file"""
         obj = self.browse(cr, uid, ids)[0]
-        print context
 
         # Check if financial manager or not
         mod_obj = self.pool.get('ir.model.data')
@@ -336,22 +350,28 @@ class wizard_account_budget_lines_import(osv.TransientModel):
                 if budgets:
                     budget = budgets[0]
 
+		    # Check if the user in a budget owner for that specific budget
                     bud = self.pool.get('crossovered.budget').browse(cr, uid, budget) 
-                    if uid != bud.creating_user_id.id and not finman:
-                        raise osv.except_osv(_('Error'),_("You must be the budget responsible in order to import budget lines for the budget %s"%(row[0])))
+		    boids = []
+		    boids.append(bud.creating_user_id.id)
+	            for bo in bud.creating_user_ids:
+			boids.append(bo.id)
+
+#                    if uid != bud.creating_user_id.id and not finman:
+                    if uid not in boids and not finman:
+                        raise osv.except_osv(_('Error'),_("Enkel verantwoordelijken van budget %s kunnen budget lijnen importeren"%(row[0])))
 
                 else:
-                    raise osv.except_osv(_('No budget found !'), _('No budget could be found for that code %s'%(row[0])))
+                    raise osv.except_osv(_('No budget found !'), _('Geen budget gevonden met code %s'%(row[0])))
 
             # Find the analytic account
             account = False
             if row[1] != "": 
                 accounts = self.pool.get('account.analytic.account').search(cr, uid, [('code','=',row[1])]) 
-                print "accounts:",accounts
                 if accounts:
                     account = accounts[0]
                 else:
-                    raise osv.except_osv(_('No analytic account found !'), _('No analytic account could be found for that code %s'%(row[1])))
+                    raise osv.except_osv(_('No analytic account found !'), _('Geen analytische rekening gevonden met code %s'%(row[1])))
 
             # Find the budgetary position
             position = False
@@ -360,7 +380,7 @@ class wizard_account_budget_lines_import(osv.TransientModel):
                 if positions:
                     position = positions[0]
                 else:
-                    raise osv.except_osv(_('No analytic account found !'), _('No budgetary position could be found for that code %s'%(row[2])))
+                    raise osv.except_osv(_('No analytic account found !'), _('Geen begroting gevonden met code %s'%(row[2])))
 
             # Get the description
             name = row[3]
@@ -404,7 +424,6 @@ class account_account(osv.osv):
         result = {}
         for account in self.browse(cr, uid ,ids):
             result[account.id] = False
-            print "BUDPOS:", account.budgetary_position_ids
             if account.budgetary_position_ids:
                 result[account.id] = True
         return result
