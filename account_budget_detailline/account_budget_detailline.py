@@ -282,7 +282,7 @@ class account_budget_post(osv.osv):
                 if acc.budgetary_position_ids:
                     for budg in acc.budgetary_position_ids:
                         if not 'budget_assign_force' in vals or 'budget_assign_force' in vals and not vals['budget_assign_force']:
-                            raise osv.except_osv(_('Account already assigned !'), _('De rekening %s is al toegekend aan een andere begroting en kan enkel met 'Force Account Assignation' aangepast worden.'%(acc.code)))
+                            raise osv.except_osv(_('Account already assigned !'), _('De rekening %s is al toegekend aan een andere begroting en kan enkel met "Force Account Assignation" aangepast worden.'%(acc.code)))
 
         return super(account_budget_post, self).create(cr, uid, vals, context=context)
 
@@ -294,7 +294,7 @@ class account_budget_post(osv.osv):
                     if acc.budgetary_position_ids:
                         for budg in acc.budgetary_position_ids:
                             if budg.id != budget_pos.id and not budget_pos.budget_assign_force:
-                                raise osv.except_osv(_('Account already assigned !'), _('De rekening %s is al toegekend aan een andere begroting en kan enkel met 'Force Account Assignation' aangepast worden.'%(acc.code)))
+                                raise osv.except_osv(_('Account already assigned !'), _('De rekening %s is al toegekend aan een andere begroting en kan enkel met "Force Account Assignation" aangepast worden.'%(acc.code)))
         return super(account_budget_post, self).write(cr, uid, ids, vals, context=context)
 
     _columns = {
