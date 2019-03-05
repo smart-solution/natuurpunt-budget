@@ -388,7 +388,7 @@ class wizard_account_budget_lines_import(osv.TransientModel):
             # Get the planned amount
             planned_amount = 0.0
             if row[4] != "": 
-                planned_amount = float(row[4].replace(',','.'))
+                planned_amount = float(row[4].replace('.','').replace(',','.'))
             
             # Get the start date
             date_from = False
